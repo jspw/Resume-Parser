@@ -1,2 +1,2 @@
-
 pdfminer.six==20220524
+setuptools==62.4.0

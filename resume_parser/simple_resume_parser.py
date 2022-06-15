@@ -7,7 +7,6 @@ import json
 from datetime import datetime
 from binascii import b2a_hex
 
-
 # files = [file for file in glob.glob("data/new_sample/*.pdf")]
 # files = [file for file in glob.glob("data/sample/*.pdf")]
 # files = [file for file in glob.glob("data/dsi/*.pdf")]
@@ -16,26 +15,29 @@ files = [file for file in glob.glob("data/*.pdf")]
 all_users = []
 
 
-def isEmailAddress(str):
-    if(re.fullmatch(email_regex, text)):
+def isEmailAddress(text):
+    if re.fullmatch(email_regex, text):
         return True
     return False
 
 
 def isPhoneNumber(str):
-    if(len(str) >= 11 and len(str) <= 14 and re.fullmatch(phoneNo_rex, str.replace(" ", '').replace("+", '').replace("-", "").replace("(", "").replace(")", ""))):
+    if (11 <= len(str) <= 14 and re.fullmatch(phoneNo_rex,
+                                              str.replace(" ", '').replace("+", '').replace("-", "").replace("(",
+                                                                                                             "").replace(
+                                                  ")", ""))):
         return True
     return False
 
 
-def write_file(folder, filename, filedata, flags='w'):
+def write_file(folder, filename, fileData, flags='w'):
     """Write the file data to the folder and filename combination
     (flags: 'w' for write text, 'wb' for write binary, use 'a' instead of 'w' for append)"""
     result = False
     if os.path.isdir(folder):
         try:
             file_obj = open(os.path.join(folder, filename), flags)
-            file_obj.write(filedata)
+            file_obj.write(fileData)
             file_obj.close()
             result = True
         except IOError:
@@ -85,7 +87,7 @@ def extractGithubInfo(url):
     starting_pos = pos + len(brand)
     ending_pos = url.find("/", starting_pos)
     # print(starting_pos, ending_pos)
-    if(ending_pos == -1):
+    if ending_pos == -1:
         github_username = url[starting_pos:]
 
     else:
@@ -95,7 +97,7 @@ def extractGithubInfo(url):
     # print(starting_pos + len(github_username), len(url))
     return {
         "url": url,
-        "isProfile": True if(starting_pos + len(github_username) == len(url)) else False,
+        "isProfile": True if (starting_pos + len(github_username) == len(url)) else False,
         "username": github_username.lower()
     }
 
@@ -106,7 +108,7 @@ def predictGithubUserNameFromRepositoryUrl(githubLinks):
     for githubLink in githubLinks:
         pos = next((index for (index, d) in enumerate(
             githubInfo) if d["username"] == githubLink["username"]), None)
-        if(pos != None):
+        if pos is not None:
             githubInfo[pos].update({
                 "username": githubLink["username"],
                 "count": githubInfo[pos].get("count") + 1
@@ -117,7 +119,7 @@ def predictGithubUserNameFromRepositoryUrl(githubLinks):
                 "username": githubLink["username"],
                 "count": 1
             })
-    if(len(githubInfo) > 0):
+    if len(githubInfo) > 0:
         maxCountedUsername = max(githubInfo, key=lambda x: x['count'])
         minCountedUsername = min(githubInfo, key=lambda x: x['count'])
         # print(maxCountedUsername)
@@ -142,23 +144,23 @@ def predictName(listOfNames, githubUsername):
     largest = next((index for (index, d) in enumerate(
         listOfNames) if d["algorithm"] == "Largest Font"), None)
 
-    if(listOfNames[first]["name"] == listOfNames[largest]["name"]):
+    if listOfNames[first]["name"] == listOfNames[largest]["name"]:
         return listOfNames[first]["name"]
 
     nameContainer = next((index for (index, d) in enumerate(
         listOfNames) if d["algorithm"] == "Contain name"), None)
-    if(nameContainer != None):
+    if nameContainer is not None:
         # TODO :  check if name is a field not a substring of word
         predictedName = getOriginalNameFromNameField(
             listOfNames[nameContainer]["name"])
 
-        if(len(predictedName) < 20):
+        if len(predictedName) < 20:
             print(len(predictedName) < 20)
             return predictedName
 
-    if(githubUsername.lower() in listOfNames[first]["name"]):
+    if githubUsername.lower() in listOfNames[first]["name"]:
         return listOfNames[first]["name"]
-    if(githubUsername.lower() in listOfNames[largest]["name"]):
+    if githubUsername.lower() in listOfNames[largest]["name"]:
         return listOfNames[largest]["name"]
     # TODO : more validation to be done like github / linkedin
 
@@ -196,65 +198,65 @@ for cv in files:
         for element in page_layout:
             if isinstance(element, LTTextContainer):
                 for text_line in element:
-                    if(str(type(text_line)) ==
-                       "<class 'pdfminer.layout.LTTextLineHorizontal'>"):
+                    if (str(type(text_line)) ==
+                            "<class 'pdfminer.layout.LTTextLineHorizontal'>"):
                         for character in text_line:
                             if isinstance(character, LTChar):
                                 Font_size = character.size
 
-                        if(len(text_line.get_text().replace(" ", '').replace("\n", "").replace("\ue732", '').replace("\uf0b7", '').replace("\t", "")) > 0):
+                        if (len(text_line.get_text().replace(" ", '').replace("\n", "").replace("\ue732", '').replace(
+                                "\uf0b7", '').replace("\t", "")) > 0):
                             print(text_line)
                             Extract_Data.append(
                                 [Font_size, (text_line.get_text())])
 
-                            if("name" in text_line.get_text().lower()):
-
+                            if "name" in text_line.get_text().lower():
                                 predictedNames.append({
                                     "name": text_line.get_text().replace("\n", ''),
                                     'fontSize': Font_size,
                                     "algorithm": "Contain name"
                                 })
                 for text in element.get_text().split():
-                    if(isEmailAddress(text)):
+                    if isEmailAddress(text):
                         email_addresses.append(text)
-                        if(userInfo["email_address"] == ''):
+                        if userInfo["email_address"] == '':
                             userInfo["email_address"] = text
-                    elif("linkedin" in text and len(text) > len("linkedin")):
+                    elif "linkedin" in text and len(text) > len("linkedin"):
                         urls.append(text)
-                        if(userInfo["linkedIn"] == ""):
+                        if userInfo["linkedIn"] == "":
                             userInfo["linkedIn"] = text
 
-                    elif("github" in text and len(text) > len("github")):
+                    elif "github" in text and len(text) > len("github"):
                         githubLink = extractGithubInfo(text)
                         urls.append(text)
                         # print(githubLink, "\n")
-                        if(githubLink["isProfile"] == True and userInfo["github_link"] != ''):
+                        if githubLink["isProfile"] == True and userInfo["github_link"] != '':
                             userInfo["github_link"] = "https://www.github.com/" + \
-                                githubLink["username"]
+                                                      githubLink["username"]
                         else:
                             userInfo["github_repositories"].append(
                                 extractGithubInfo(text))
 
                     else:
                         for word in text.split(","):
-                            if(isPhoneNumber(word)):
+                            if isPhoneNumber(word):
                                 phone_number.append(word)
-                                if(userInfo["phone_number"] == ""):
+                                if userInfo["phone_number"] == "":
                                     userInfo["phone_number"] = word
             elif isinstance(element, LTFigure):
                 for imageLTT in element:
                     if isinstance(imageLTT, LTImage):
                         image = save_image(imageLTT)
-                        if(image != None):
+                        if image is not None:
                             userInfo["images"].append(image)
 
     # for data in Extract_Data:
     #     print(data)
 
-    if(len(Extract_Data) > 0):
+    if len(Extract_Data) > 0:
 
         predictedNames.append({
-            "name": (Extract_Data[0][1]).replace("\n", '') if Extract_Data[0][1] != None else "NAN",
+            "name": (Extract_Data[0][1]).replace("\n", '') if Extract_Data[0][1] is not None else "NAN",
             'fontSize': Extract_Data[0][0],
             "algorithm": "1st Paragraph",
 
@@ -265,10 +267,10 @@ for cv in files:
             'fontSize': Extract_Data[0][0],
             "algorithm": "Largest Font"
         })
-        if(userInfo["github_link"] == ''):
+        if userInfo["github_link"] == '':
             userInfo["github_link"] = "https://www.github.com/" + \
-                predictGithubUserNameFromRepositoryUrl(
-                    userInfo["github_repositories"])
+                                      predictGithubUserNameFromRepositoryUrl(
+                                          userInfo["github_repositories"])
         userInfo["name"] = predictName(
             predictedNames, userInfo["github_link"])
 
@@ -281,7 +283,7 @@ for cv in files:
     }
     print(userInfo)
 
-    all_users.append({"cv":  cv, "data":  userInfo})
+    all_users.append({"cv": cv, "data": userInfo})
 
 with open("output/dsi" + ".json", "w") as outfile:
     json.dump(all_users, outfile)

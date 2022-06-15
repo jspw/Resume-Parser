@@ -1,0 +1,62 @@
+[
+  {
+    "cv": "data/Shifat_SWE.pdf",
+    "data": {
+      "phone_number": "+8801714986887",
+      "email_address": "mhshifat757@gmail.com",
+      "name": "Mehedi Hasan Shifat ",
+      "github_link": "https://www.github.com/jspw",
+      "linkedIn": "linkedin.com/in/mhshifat",
+      "images": [
+        "Im10_2022-06-15 18:55:42.997695.jpeg"
+      ],
+      "github_repositories": [
+        {
+          "url": "github.com/jspw",
+          "isProfile": true,
+          "username": "jspw"
+        },
+        {
+          "url": "github)",
+          "isProfile": false,
+          "username": ""
+        }
+      ],
+      "metaData": {
+        "predictedNames": [
+          {
+            "name": "I have worked on a resume parser which will extract the information like name, phone",
+            "fontSize": 7.998463132003849,
+            "algorithm": "Contain name"
+          },
+          {
+            "name": "no, pro\ufb01le pic, email address, github username, linkedin pro\ufb01le, projects links etc for a",
+            "fontSize": 7.998463132003849,
+            "algorithm": "Contain name"
+          },
+          {
+            "name": "Mehedi Hasan Shifat ",
+            "fontSize": 23.081279323782496,
+            "algorithm": "1st Paragraph"
+          },
+          {
+            "name": "Mehedi Hasan Shifat ",
+            "fontSize": 23.081279323782496,
+            "algorithm": "Largest Font"
+          }
+        ],
+        "urls": [
+          "linkedin.com/in/mhshifat",
+          "github.com/jspw",
+          "github)"
+        ],
+        "phone_number": [
+          "+8801714986887"
+        ],
+        "email_addresses": [
+          "mhshifat757@gmail.com"
+        ]
+      }
+    }
+  }
+]

@@ -1,6 +1,10 @@
 # Resume Parser
 
-It is a python script to parse information from a cv or resume in pdf.
+## Intro
+
+It is a python script to parse information from a cv or resume in pdf. It takes input from a folder `/data` and take
+all `pdf` files then apply some hardcoded **rex** and **sudo** algorithms and parse information into a json file
+in `/output` folder.
 
 ## Features
 
@@ -10,97 +14,77 @@ It is a python script to parse information from a cv or resume in pdf.
 - [x] Email address
 - [x] Phone number
 - [x] Linkedin link
-- [x] Predict Github link
+- [x] Predict GitHub link
 - [x] image
 
 ## How To Run
 
 ### Pre-requisite
 
-- store resumes (**.pdf**) in `data/` directory
+- create dir and keep all resumes (**.pdf**) in `data/` directory
 - install required packages :
 
-  - `pip3 install requirements.txt`
+    - `pip3 install requirements.txt`
 
 ### Installation
 
 - commands :
 
-  > cd resume_parser
-
   > python3 simple_resume_parser.py
 
 - output will be saved in `output/` directory and images will be in `output/images/`
 
-```json
-[
-  {
-    "cv": "data/2017831017.pdf",
-    "data": {
-      "phone_number": "+8801714986887",
-      "email_address": "mhshifat757@gmail.com",
-      "name": "Mehedi Hasan",
-      "github_link": "https://www.github.com/jspw",
-      "linkedIn": "linkedin.com/in/mhshifat",
-      "images": ["Im7_2022-01-05 08:09:49.933569.jpeg"],
-      "github_repositories": [
-        {
-          "url": "github.com/jspw",
-          "isProfile": true,
-          "username": "jspw"
-        },
-        {
-          "url": "https://github.com/jspw/Paper",
-          "isProfile": false,
-          "username": "jspw"
-        },
-        {
-          "url": "https://github.com/jspw/cp-tool",
-          "isProfile": false,
-          "username": "jspw"
-        },
-        {
-          "url": "https://github.com/jspw/Ubuntu-Launcher",
-          "isProfile": false,
-          "username": "jspw"
-        },
-        {
-          "url": "https://github.com/jspw/HackTheVerse_SUST_Tetrahedron",
-          "isProfile": false,
-          "username": "jspw"
-        },
-        {
-          "url": "https://github.com/jspw/CodeNerd",
-          "isProfile": false,
-          "username": "jspw"
-        }
-      ],
-      "metaData": {
-        "predictedNames": [
+  ```json
+  [
+    {
+      "cv": "data/Shifat_SWE.pdf",
+      "data": {
+        "phone_number": "+8801714986887",
+        "email_address": "mhshifat757@gmail.com",
+        "name": "Mehedi Hasan Shifat ",
+        "github_link": "https://www.github.com/jspw",
+        "linkedIn": "linkedin.com/in/mhshifat",
+        "images": [],
+        "github_repositories": [
           {
-            "name": "Mehedi Hasan",
-            "fontSize": 23.09002663941783,
-            "algorithm": "1st Paragraph"
+            "url": "github.com/jspw",
+            "isProfile": true,
+            "username": "jspw"
           },
           {
-            "name": "Mehedi Hasan",
-            "fontSize": 23.09002663941783,
-            "algorithm": "Largest Font"
+            "url": "github)",
+            "isProfile": false,
+            "username": ""
           }
         ],
-        "urls": [
-          "linkedin.com/in/mhshifat",
-          "github.com/jspw",
-          "https://github.com/jspw/Paper",
-          "https://github.com/jspw/cp-tool",
-          "https://github.com/jspw/Ubuntu-Launcher",
-          "https://github.com/jspw/HackTheVerse_SUST_Tetrahedron",
-          "https://github.com/jspw/CodeNerd"
-        ],
-        "phone_number": ["+8801714986887"],
-        "email_addresses": ["mhshifat757@gmail.com"]
+        "metaData": {
+          "predictedNames": [
+            {
+              "name": "I have worked on a resume parser which will extract the information like name, phone",
+              "fontSize": 7.998463132003849,
+              "algorithm": "Contain name"
+            },
+            {
+              "name": "no, pro\ufb01le pic, email address, github username, linkedin pro\ufb01le, projects links etc for a",
+              "fontSize": 7.998463132003849,
+              "algorithm": "Contain name"
+            },
+            {
+              "name": "Mehedi Hasan Shifat ",
+              "fontSize": 23.081279323782496,
+              "algorithm": "1st Paragraph"
+            },
+            {
+              "name": "Mehedi Hasan Shifat ",
+              "fontSize": 23.081279323782496,
+              "algorithm": "Largest Font"
+            }
+          ],
+          "urls": ["linkedin.com/in/mhshifat", "github.com/jspw", "github)"],
+          "phone_number": ["+8801714986887"],
+          "email_addresses": ["mhshifat757@gmail.com"]
+        }
       }
     }
-  }
-]
-```
+  ]
+  ```
